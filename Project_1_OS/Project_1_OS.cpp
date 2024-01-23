@@ -2,10 +2,72 @@
 //
 
 #include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+
+
+std::string* readFileIntoArray(std::string fileName)
+{
+    
+    std::vector<std::string> lines;
+    std::string currLine;
+
+    // Read from the text file
+    std::ifstream inputFile(fileName);
+
+    if (!inputFile.is_open()) {
+        std::cerr << "Error opening file: " << fileName << std::endl;
+        // Handle the error, return or exit the program if needed
+    }
+    
+    while (getline(inputFile, currLine))
+    {
+        //1. Various consecutive blank characters (space and tab) are identical to a single space character.
+       
+
+        //2. A blank line is ignored.
+        
+        /*
+        3. A pond-sign character (#) and its following characters up to a newline character are ignored
+        unless the pond-sign character is not surrounded by a pair of single quotes or a pair of double
+        quotes. It is called a “comment”. Of course, after ignoring the character and its followings, if the
+        line contains only blank characters, the line is completely ignored.
+        */
+
+
+
+        /*
+        4. A line ending with a backslash and a newline character without interruption between them is
+        called “continuation”. If a line ends with the continuation, the next line is concatenated to the
+        current line. Be aware that a line ending with a comment cannot contain a continuation
+        */
+
+        
+        // Add final edited string into vector
+
+        lines.push_back(currLine);
+
+    }
+
+    // Close the file
+    inputFile.close();
+
+    const size_t n = lines.size();
+
+    std::string * linesArr = new std::string[n];
+
+    copy(lines.begin(), lines.end(), linesArr);
+
+    return linesArr;
+
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    std::string * inputLines = readFileIntoArray("InputFile.txt");
+
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
