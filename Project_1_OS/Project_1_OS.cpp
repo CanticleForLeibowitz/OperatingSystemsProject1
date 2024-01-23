@@ -7,9 +7,44 @@
 #include <string>
 
 
+static std::string removeComments(char quoteType, std::string str)
+{
+    int start = 0;
+    int pdPos = -1;
+
+    while (true)
+    {
+        int quotePos = str.find(quoteType);
+
+        if (quotePos == -1)
+        {
+            pdPos = str.find('#', start);
+            if (pdPos == -1)
+            {
+                return str;
+            }
+            else
+            {
+                return str.substr(start, pdPos);
+            }
+        }
+        std::string beforeQuote = str.substr(start, quotePos);
+
+        int pdPos = beforeQuote.find('#');
+
+        if (pdPos != 1)
+            return str.substr(0, pdPos);
+
+        start = str.find(quoteType, quotePos+1) + 1;
+
+    }
+
+}
+
+
 std::string* readFileIntoArray(std::string fileName)
 {
-    
+   
     std::vector<std::string> lines;
     std::string currLine;
 
@@ -33,6 +68,24 @@ std::string* readFileIntoArray(std::string fileName)
         unless the pond-sign character is not surrounded by a pair of single quotes or a pair of double
         quotes. It is called a “comment”. Of course, after ignoring the character and its followings, if the
         line contains only blank characters, the line is completely ignored.
+
+        int i = 8; # comment 
+        string pdStr = "#"
+        char pd = '#'
+        string pdStr = "#" # the comment is here
+        char pd = '#'
+
+        search for " or '
+
+        once found, search for # in substring before
+
+        if # found, set as endpoint and unconsider all other characters
+
+        if not found, search for second "
+
+        recursively call function with substring starting after "
+
+
         */
 
 
@@ -67,7 +120,9 @@ int main()
 {
     std::string * inputLines = readFileIntoArray("InputFile.txt");
 
+    std::string oldLine = "string pdStr = \"#\" # Here is the comment";
 
+    std::cout << removeComments('"', oldLine);
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
