@@ -7,88 +7,95 @@
 #include <string>
 
 
-static std::string removeComments(char quoteType, std::string str)
+// std::string::npos == -1
+
+static int count(std::string str, char countChar)
+{
+    int count = 0;
+
+    for (int i = 0; i < str.size(); i++)
+    {
+        if (str[i] == countChar)
+        {
+            count++;
+        }     
+    }
+
+    return count;
+}
+
+
+
+
+static std::string removeComments(std::string str)
 {
     int start = 0;
-    int pdPos = -1;
+    /*
 
+    base case: pdLoc == -1; return str
+    1. find pound symbol - store position in pdLoc
+    2. count " and ' behind it
+    3. if both are even, return str.substr(0, pdLoc)
+    4. if either is odd, move start up to pdLoc
+    */
     while (true)
     {
-        int quotePos = str.find(quoteType);
 
-        if (quotePos == -1)
+        int pdLoc = str.find('#', start);
+
+        if (pdLoc == std::string::npos)
         {
-            pdPos = str.find('#', start);
-            if (pdPos == -1)
-            {
-                return str;
-            }
-            else
-            {
-                return str.substr(start, pdPos);
-            }
+            return str;
         }
-        std::string beforeQuote = str.substr(start, quotePos);
+        std::string beforePd = str.substr(0, pdLoc);
 
-        int pdPos = beforeQuote.find('#');
+        if (count(beforePd, '\'') % 2 == 0 && count(beforePd, '"') % 2 == 0)
+        {
+            return str.substr(0, pdLoc);
+        }
 
-        if (pdPos != 1)
-            return str.substr(0, pdPos);
-
-        start = str.find(quoteType, quotePos+1) + 1;
+        start = pdLoc + 1;
 
     }
 
 }
 
 
-std::string* readFileIntoArray(std::string fileName)
+
+std::vector<std::string> readFileIntoArray(std::string fileName)
 {
-   
+    
     std::vector<std::string> lines;
     std::string currLine;
 
     // Read from the text file
     std::ifstream inputFile(fileName);
 
+
+
     if (!inputFile.is_open()) {
         std::cerr << "Error opening file: " << fileName << std::endl;
-        // Handle the error, return or exit the program if needed
     }
     
+    bool concatWithLast = false;
+
     while (getline(inputFile, currLine))
     {
         //1. Various consecutive blank characters (space and tab) are identical to a single space character.
        
 
-        //2. A blank line is ignored.
+
         
+
         /*
         3. A pond-sign character (#) and its following characters up to a newline character are ignored
         unless the pond-sign character is not surrounded by a pair of single quotes or a pair of double
         quotes. It is called a “comment”. Of course, after ignoring the character and its followings, if the
         line contains only blank characters, the line is completely ignored.
 
-        int i = 8; # comment 
-        string pdStr = "#"
-        char pd = '#'
-        string pdStr = "#" # the comment is here
-        char pd = '#'
-
-        search for " or '
-
-        once found, search for # in substring before
-
-        if # found, set as endpoint and unconsider all other characters
-
-        if not found, search for second "
-
-        recursively call function with substring starting after "
-
-
         */
 
-
+        currLine = removeComments(currLine);
 
         /*
         4. A line ending with a backslash and a newline character without interruption between them is
@@ -96,33 +103,45 @@ std::string* readFileIntoArray(std::string fileName)
         current line. Be aware that a line ending with a comment cannot contain a continuation
         */
 
+        if (currLine.substr(currLine.size() - 1, currLine.size()) == "\\")
+        {
+            concatWithLast = true;
+            currLine = currLine.substr(0, currLine.size()-1);
+            
+        }
+
+        if (concatWithLast)
+        {
+            std::string temp = lines.back() + currLine;
+
+        }
+
         
-        // Add final edited string into vector
-
-        lines.push_back(currLine);
-
+        //2. A blank line is ignored.
+        if (currLine.find_first_not_of(' ') != std::string::npos)
+        {
+            lines.push_back(currLine);
+        }
     }
 
     // Close the file
     inputFile.close();
 
-    const size_t n = lines.size();
-
-    std::string * linesArr = new std::string[n];
-
-    copy(lines.begin(), lines.end(), linesArr);
-
-    return linesArr;
+    return lines;
 
 }
 
 int main()
 {
-    std::string * inputLines = readFileIntoArray("InputFile.txt");
+    std::vector<std::string> inputLines = readFileIntoArray("InputFile.txt");
 
-    std::string oldLine = "string pdStr = \"#\" # Here is the comment";
+    for (size_t i = 0; i < inputLines.size(); i++)
+    {
+        std::cout << inputLines[i] << std::endl;
+    }
 
-    std::cout << removeComments('"', oldLine);
+
+    
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

@@ -1,2 +1,6 @@
-This is my input file
-look at me go.
+string pdStr = "#" Here is the comment just kidding "#" now heres the comment # jk
+int i = 8; # comment 
+string pdStr = "#"
+char pd = '#'
+string pdStr = "#" # the comment is here
+char pd = '#'
