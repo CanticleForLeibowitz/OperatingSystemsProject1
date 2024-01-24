@@ -62,7 +62,7 @@ static std::string removeComments(std::string str)
 
 
 
-std::vector<std::string> readFileIntoArray(std::string fileName)
+std::vector<std::string> readFileIntoVector(std::string fileName)
 {
     
     std::vector<std::string> lines;
@@ -103,20 +103,25 @@ std::vector<std::string> readFileIntoArray(std::string fileName)
         current line. Be aware that a line ending with a comment cannot contain a continuation
         */
 
-        if (currLine.substr(currLine.size() - 1, currLine.size()) == "\\")
-        {
-            concatWithLast = true;
-            currLine = currLine.substr(0, currLine.size()-1);
-            
-        }
-
         if (concatWithLast)
         {
-            std::string temp = lines.back() + currLine;
-
+            currLine = lines.back() + currLine;
+            lines.pop_back();
+            concatWithLast = false;
         }
 
         
+        if (!(currLine.empty()) && currLine.back() == '\\')
+        {
+            {
+                concatWithLast = true;
+                currLine.pop_back();        
+            }
+        }
+
+
+        
+
         //2. A blank line is ignored.
         if (currLine.find_first_not_of(' ') != std::string::npos)
         {
@@ -133,7 +138,7 @@ std::vector<std::string> readFileIntoArray(std::string fileName)
 
 int main()
 {
-    std::vector<std::string> inputLines = readFileIntoArray("InputFile.txt");
+    std::vector<std::string> inputLines = readFileIntoVector("InputFile.txt");
 
     for (size_t i = 0; i < inputLines.size(); i++)
     {
