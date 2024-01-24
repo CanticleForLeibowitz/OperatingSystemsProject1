@@ -18,5 +18,11 @@
     <ClCompile Include="Project_1_OS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="matchstring.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dictionary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

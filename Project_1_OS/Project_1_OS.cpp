@@ -2,10 +2,12 @@
 //
 
 #include <iostream>
-
+#include "matchstring.cpp"
 int main()
 {
-    std::cout << "Hello World!\n";
+    std::string answer;
+    answer = matchString("run");
+    std::cout << answer;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
