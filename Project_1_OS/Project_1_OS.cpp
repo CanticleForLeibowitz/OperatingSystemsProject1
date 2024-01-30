@@ -26,7 +26,7 @@ static std::unordered_map<std::string, std::string> dictionary() {
   dict["give"] = "verb";
   dict["turn"] = "verb";
   dict["listen"] = "verb";
-  dict["I"] = "pronoun";
+  dict["hide"] = "verb";
   dict["you"] = "pronoun";
   dict["he"] = "pronoun";
   dict["she"] = "pronoun";
@@ -41,16 +41,30 @@ static std::unordered_map<std::string, std::string> dictionary() {
 
 std::string matchString(std::string entry) {
   std::string word;
-  std::unordered_map<std::string, std::string> dict;
-  dict = dictionary();
-  for (auto x : dictionary()) {
-    if (entry == x.first) {
-      word = "Word: " + x.first + " " + "Category: " + x.second;
-      break;
-    } else {
-      word = "external";
+  std::string keys;
+  std::vector<std::string> values;
+  std::vector<std::string> words;
+  for(int i = 0; i <= entry.size(); i++){
+    if (!isspace(entry[i]))
+    {
+      keys = keys + entry[i];
+    }
+    else
+    {
+    keys = "";  
+    }
+    for (auto x : dictionary()) {
+      if (keys == x.first) {
+        word = "\n Word: " + x.first + " " + "Category: " + x.second+"\n";
+        std::cout<<word;
+        keys = "";
+      } else 
+        word = "\n Category: external\n";
     }
   }
+  
+  
+  
 
   return word;
 }
@@ -160,9 +174,8 @@ int main() {
   std::vector<std::string> inputLines = readFileIntoVector("InputFile.txt");
 
   for (size_t i = 0; i < inputLines.size(); i++) {
-    answer = matchString(inputLines[i]) + "\n";
+    answer = matchString(inputLines[i]);
     std::cout << answer;
-    std::cout << inputLines[i] << std::endl;
   }
 }
 
