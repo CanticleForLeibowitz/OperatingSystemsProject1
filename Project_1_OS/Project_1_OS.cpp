@@ -39,24 +39,23 @@ static std::unordered_map<std::string, std::string> dictionary() {
   return dict;
 }
 
-std::string matchString(std::string entry) {
+std::vector<std::string> matchString(std::string entry) {
   std::string word;
   std::string keys;
   std::vector<std::string> values;
   std::vector<std::string> words;
   for(int i = 0; i <= entry.size(); i++){
-    if (!isspace(entry[i]))
-    {
+    if (!isspace(entry[i])){
       keys = keys + entry[i];
     }
-    else
-    {
+    else{
     keys = "";  
     }
     for (auto x : dictionary()) {
       if (keys == x.first) {
         word = "\n Word: " + x.first + " " + "Category: " + x.second+"\n";
-        std::cout<<word;
+        words.push_back(word);
+        //std::cout<<word;
         keys = "";
       } else 
         word = "\n Category: external\n";
@@ -64,9 +63,11 @@ std::string matchString(std::string entry) {
   }
   
   
-  
+  for(int i = 0; i < words.size(); i++){
+    std::cout<<words[i];
+  }
 
-  return word;
+  return words;
 }
 
 static int count(std::string str, char countChar) {
@@ -170,13 +171,13 @@ std::vector<std::string> readFileIntoVector(std::string fileName) {
 }
 
 int main() {
-  std::string answer;
+  std::vector<std::string> answer;
   std::vector<std::string> inputLines = readFileIntoVector("InputFile.txt");
 
   for (size_t i = 0; i < inputLines.size(); i++) {
     answer = matchString(inputLines[i]);
-    std::cout << answer;
   }
+  std::cout << answer[answer.size() - 1];
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
