@@ -4,7 +4,7 @@
 
 int main() {
 	//Opens file, error handling for if the file can't open
-	std::ifstream inputFile("input.txt");
+	std::ifstream inputFile("InputFile.txt");
 	if (!inputFile.is_open()) {
 		std::cerr << "Failed to open input file." << std::endl;
 		return 1;
