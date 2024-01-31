@@ -175,9 +175,9 @@ int main() {
   std::vector<std::string> inputLines = readFileIntoVector("InputFile.txt");
 
   for (size_t i = 0; i < inputLines.size(); i++) {
-    answer = matchString(inputLines[i]);
+    matchString(inputLines[i]);
   }
-  std::cout << answer[answer.size() - 1];
+ 
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
