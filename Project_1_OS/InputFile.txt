@@ -1,9 +1,9 @@
 string pdStr = "#" Here is the comment just kidding "#" now heres the comment # jk
-int i = 8; # comment 
-                       
+int i = 8; # comment                        
+=======
+hide seek                       
 string pdStr = "#"
 char pd = '#'
 string pdStr = "#" # the comment is here
-
 char pd = '#' \
 forgot this part
